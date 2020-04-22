@@ -1,5 +1,6 @@
 package com.app.mykitchen.controller;
 
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -7,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class HomeController {
 	
 	@RequestMapping("/")
-	public String index() {
+	public String index() throws ClassNotFoundException {		
 		return "index";
 	}
 }
