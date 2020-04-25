@@ -1,13 +1,23 @@
 package com.app.mykitchen.domain;
 
+
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+
+import com.app.mykitchen.domain.security.UserRole;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-public class User {
+public class User{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -17,6 +27,10 @@ public class User {
 	private String password;
 	private String firstname;
 	private String lastname;
+	
+	@OneToMany(mappedBy="user", cascade=CascadeType.ALL, fetch=FetchType.LAZY)
+	@JsonIgnore
+	private Set<UserRole> userRoles = new HashSet<>();
 
 	@Column(name="email", nullable = false, updatable = false)
 	private String email;
