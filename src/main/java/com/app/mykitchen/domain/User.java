@@ -1,6 +1,6 @@
 package com.app.mykitchen.domain;
 
-
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -13,26 +13,31 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import com.app.mykitchen.domain.security.ApplicationAuthority;
 import com.app.mykitchen.domain.security.UserRole;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-public class User{
-
+public class User implements UserDetails {
+	private static final long serialVersionUID = -858984227232272230L;
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name="id", nullable = false, updatable = false)
+	@Column(name = "id", nullable = false, updatable = false)
 	private Long id;
 	private String username;
 	private String password;
 	private String firstname;
 	private String lastname;
-	
-	@OneToMany(mappedBy="user", cascade=CascadeType.ALL, fetch=FetchType.LAZY)
+
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JsonIgnore
 	private Set<UserRole> userRoles = new HashSet<>();
 
-	@Column(name="email", nullable = false, updatable = false)
+	@Column(name = "email", nullable = false, updatable = false)
 	private String email;
 	private String phoneNumber;
 	private boolean enabled = true;
@@ -85,10 +90,6 @@ public class User{
 		this.phoneNumber = phoneNumber;
 	}
 
-	public boolean isEnabled() {
-		return enabled;
-	}
-
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
 	}
@@ -100,4 +101,35 @@ public class User{
 	public void setPassword(String password) {
 		this.password = password;
 	}
+
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		Set<GrantedAuthority> authorities = new HashSet<>();
+		userRoles.forEach((user) -> authorities.add(new ApplicationAuthority(user.getRole().getName())));
+		return authorities;
+	}
+
+	@Override
+	public boolean isAccountNonExpired() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	@Override
+	public boolean isAccountNonLocked() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	@Override
+	public boolean isCredentialsNonExpired() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	@Override
+	public boolean isEnabled() {
+		return enabled;
+	}
+
 }
