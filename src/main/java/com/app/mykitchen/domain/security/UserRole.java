@@ -15,6 +15,7 @@ import com.app.mykitchen.domain.User;
 @Entity
 @Table(name="user_role")
 public class UserRole {
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(updatable=false, nullable=false)
