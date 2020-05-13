@@ -2,11 +2,11 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head th:replace="common/header :: common-header" />
 <body>
-    <div th:replace="common/header :: navbar"></div>
-    
+	<div th:replace="common/header :: navbar"></div>
+
 	<div class="container">
 		<main role="main">
-			<div class="jumbotron">
+		    <div class="jumbotron">
 				<div id="carouselExampleIndicators"
 					class="col-sm-9 mx-auto carousel slide" data-ride="carousel">
 					<ol class="carousel-indicators">
@@ -17,12 +17,11 @@
 					</ol>
 					<div class="carousel-inner" role="listbox">
 						<div class="carousel-item active">
-							<img class="d-block w-100" height="500"
+							<img class="img-responsive d-block w-100" height="500"
 								src="https://images.pexels.com/photos/5938/food-salad-healthy-lunch.jpg"
 								alt="First slide">
 							<div class="carousel-caption d-none d-md-block">
-								<h5>First Picture</h5>
-								<p>first picture</p>
+								<h3>Thousands of Healthy Options!</h3>
 							</div>
 						</div>
 						<div class="carousel-item">
@@ -30,8 +29,7 @@
 								src="https://images.pexels.com/photos/461198/pexels-photo-461198.jpeg"
 								alt="Second slide">
 							<div class="carousel-caption d-none d-md-block">
-								<h5>Second Picture</h5>
-								<p>second picture</p>
+								<h3>License to grill!</h3>
 							</div>
 						</div>
 						<div class="carousel-item">
@@ -39,8 +37,7 @@
 								src="https://images.pexels.com/photos/3184195/pexels-photo-3184195.jpeg"
 								alt="Third slide">
 							<div class="carousel-caption d-none d-md-block">
-								<h5>Third Picture</h5>
-								<p>third picture</p>
+								<h3>Pefect for any occasion!</h3>
 							</div>
 						</div>
 
@@ -55,31 +52,12 @@
 						</a>
 					</div>
 				</div>
-				<div class="col-sm-8 mx-auto">
-					<h1>Hello World!</h1>
-					<p>
-						This example is a quick exercise to illustrate how the navbar and
-						its contents work. Some navbars extend the width of the viewport,
-						others are confined within a
-						<code>.container</code>
-						. For positioning of navbars, checkout the <a
-							href="/docs/4.4/examples/navbar-static/">top</a> and <a
-							href="/docs/4.4/examples/navbar-fixed/">fixed top</a> examples.
-					</p>
-					<p>At the smallest breakpoint, the collapse plugin is used to
-						hide the links and show a menu button to toggle the collapsed
-						content.</p>
-					<p>
-						<a class="btn btn-primary" href="/docs/4.4/components/navbar/"
-							role="button">View navbar docs &raquo;</a>
-					</p>
-				</div>
 			</div>
 		</main>
+		
+	    <hr>
 	</div>
 
-	<hr>
-	
 	<div th:replace="common/header :: body-scripts"></div>
 </body>
 </html>
