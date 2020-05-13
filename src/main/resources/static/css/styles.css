@@ -24,3 +24,10 @@ body {
 		font-size: 3.5rem;
 	}
 }
+
+hr {
+	border: none;
+	height: 1px;
+	color: #333;
+	background-color: #333;
+}
