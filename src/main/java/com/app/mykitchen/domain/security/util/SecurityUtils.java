@@ -4,7 +4,7 @@ public class SecurityUtils {
 	public static final String[] PUBLIC_MATCHERS = {
 			"/css/**",
 			"/js/**",
-			"/image/**",
+			"/img/**",
 			"/",
 			"/myAccount"
 	};
