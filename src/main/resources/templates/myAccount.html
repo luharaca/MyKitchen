@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
-<head th:replace="common/header :: common-header" />
+<head th:replace="common/headerAndFooter :: common-header" />
 <body>
-	<div th:replace="common/header :: navbar"></div>
+	<div th:replace="common/headerAndFooter :: navbar"></div>
 
 	<div class="container">
 		<div class="row" style="margin-bottom: -100px;">
@@ -38,6 +38,6 @@
 		</div>
 	</div>
 
-	<div th:replace="common/header :: body-scripts"></div>
+	<div th:replace="common/headerAndFooter :: body-scripts"></div>
 </body>
 </html>
