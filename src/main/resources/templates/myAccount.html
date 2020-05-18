@@ -23,16 +23,89 @@
 		<img class="img-responsive" src="img/wood.png" alt="wood"
 			style="margin-top: -70px;" height="200px" width="1200px">
 
-		<div class="row" style="margin-top: 120px;">
+		<div class="row" style="margin-top: 60px;">
+
+			<!-- Tabs -->
 			<div class="col-lg-9 offset-lg-3">
 				<ul class="nav nav-tabs" role="tablist">
-					<li class="nav-item"><a class="nav-link active" data-toggle="tab" role="tab" aria-selected="true" href="#nav-home">Create
-							new account</a></li>
-					<li class="nav-item"><a class="nav-link" data-toggle="tab" role="tab" aria-selected="false" href="#nav-home">Log
-							in</a></li>
-					<li class="nav-item"><a class="nav-link" data-toggle="tab" role="tab" aria-selected="false" href="#nav-home">Forget
+					<li class="nav-item"><a class="nav-link active"
+						data-toggle="tab" role="tab" aria-selected="true"
+						href="#createUserTab">Create new account</a></li>
+					<li class="nav-item"><a class="nav-link" data-toggle="tab"
+						role="tab" aria-selected="false" href="#loginTab">Log in</a></li>
+					<li class="nav-item"><a class="nav-link" data-toggle="tab"
+						role="tab" aria-selected="false" href="#forgetPasswordTab">Forget
 							password</a></li>
 				</ul>
+
+				<!-- create new user -->
+				<div class="tab-content">
+					<div class="tab-pane fade" id="createUserTab">
+						<div class="card-group">
+							<div class="card-body"
+								style="background-color: #ededed; margin-top: 20px;">
+								<form>
+									<div class="form-group">
+										<label for="newUsername">* Username: </label> <input
+											required="required" type="text" class="form-control"
+											id="newUsername" name="username">
+									</div>
+									<div class="form-group">
+										<label for="emailAddress">* Email Address: </label> <input
+											required="required" type="text" class="form-control"
+											id="emailAddress" name="email">
+									</div>
+
+									<button type="submit" class="btn btn-primary">Create a
+										new account</button>
+								</form>
+							</div>
+						</div>
+					</div>
+
+
+					<!-- login tab -->
+					<div class="tab-pane fade" id="loginTab">
+						<div class="card-group">
+							<div class="card-body"
+								style="background-color: #ededed; margin-top: 20px;">
+								<form>
+									<div class="form-group">
+										<label for="newUsername">* Username: </label> <input
+											required="required" type="text" class="form-control"
+											id="newUsername" name="username">
+									</div>
+									<div class="form-group">
+										<label for="password">* Password: </label> <input
+											required="required" type="password" class="form-control"
+											id="password" name="password">
+									</div>
+
+									<button type="submit" class="btn btn-primary">Log in</button>
+								</form>
+							</div>
+						</div>
+					</div>
+
+					<!-- forget password tab -->
+					<div class="tab-pane fade" id="forgetPasswordTab">
+						<div class="card-group">
+							<div class="card-body"
+								style="background-color: #ededed; margin-top: 20px;">
+								<form>
+									<div class="form-group">
+										<label for="recoverEmail">* Email Address: </label> <input
+											required="required" type="text" class="form-control"
+											id="recoverEmail" name="recoverEmail">
+										<p>Enter your registered email</p>
+									</div>
+
+									<button type="submit" class="btn btn-primary">Submit</button>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
