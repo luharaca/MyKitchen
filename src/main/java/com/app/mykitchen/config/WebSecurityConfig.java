@@ -7,6 +7,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import com.app.mykitchen.domain.security.util.SecurityUtils;
 import com.app.mykitchen.service.user.UserService;
@@ -21,7 +22,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	private BCryptPasswordEncoder bcryptPasswordEncoder;
 	
 	public WebSecurityConfig() {
-		bcryptPasswordEncoder = new BCryptPasswordEncoder();
+		bcryptPasswordEncoder = SecurityUtils.passwordEncoder();
 	}
 
 
@@ -33,6 +34,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		    .permitAll()
 		    .anyRequest()
 		    .authenticated();
+		
+		http
+		    .csrf().disable().cors().disable()
+		    .formLogin().failureUrl("/login?error").defaultSuccessUrl("/")
+		    .loginPage("/login").permitAll()
+		    .and()
+		    .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+		    .logoutSuccessUrl("/?logout").deleteCookies("remember-me").permitAll()
+		    .and()
+		    .rememberMe();
 	}
 
 	@Override

@@ -1,6 +1,7 @@
 package com.app.mykitchen.domain.security;
 
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -13,37 +14,38 @@ import javax.persistence.OneToMany;
 
 @Entity
 public class Role {
-
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(updatable=false, nullable=false)
-	private Long id;
+	private String id;
 	private String name;
 	
 	@OneToMany(mappedBy="role", cascade=CascadeType.ALL, fetch=FetchType.LAZY)
-	private List<UserRole> userRoles;
-
-	public Long getId() {
+	private Set<UserRole> userRoles = new HashSet<>();
+	
+	public String getId() {
 		return id;
 	}
-
-	public void setId(Long id) {
+	
+	public void setId(String id) {
 		this.id = id;
 	}
-
-	public List<UserRole> getUserRoles() {
-		return userRoles;
-	}
-
-	public void setUserRoles(List<UserRole> userRoles) {
-		this.userRoles = userRoles;
-	}
-
+	
 	public String getName() {
 		return name;
 	}
-
+	
 	public void setName(String name) {
 		this.name = name;
 	}
+	
+	public Set<UserRole> getUserRoles() {
+		return userRoles;
+	}
+	
+	public void setUserRoles(Set<UserRole> userRoles) {
+		this.userRoles = userRoles;
+	}
 }
+
