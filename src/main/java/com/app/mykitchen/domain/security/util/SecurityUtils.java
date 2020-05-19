@@ -19,7 +19,10 @@ public class SecurityUtils {
 			"/js/**",
 			"/img/**",
 			"/",
-			"/myAccount"
+			"/myAccount",
+			"/login",
+			"/signup",
+			"/forgetpassword"
 	};
 	
 	private static final String SALT = "salt";
