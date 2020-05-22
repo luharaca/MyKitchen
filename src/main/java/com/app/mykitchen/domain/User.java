@@ -127,6 +127,14 @@ public class User implements UserDetails {
 		return true;
 	}
 
+	public Set<UserRole> getUserRoles() {
+		return userRoles;
+	}
+
+	public void setUserRoles(Set<UserRole> userRoles) {
+		this.userRoles = userRoles;
+	}
+
 	@Override
 	public boolean isEnabled() {
 		return enabled;
