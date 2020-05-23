@@ -44,7 +44,16 @@
 						<div class="card-group">
 							<div class="card-body"
 								style="background-color: #ededed; margin-top: 20px;">
-								<form method="post">
+								<div class="alert alert-info" th:if="${emailSent}">
+								   <p>An email has been sent to you. Please validate your new account via the link.</p>
+								</div>
+								<div class="alert alert-info" th:if="${usernameExists}">
+								   <p>The username <span th:text="${username}"></span> has been taken.</p>
+								</div>
+								<div class="alert alert-info" th:if="${emailExists}">
+								   <p>The email <span th:text="${email}"></span> has been registered.</p>
+								</div>
+								<form action="/signup" method="post">
 									<div class="form-group">
 										<label for="newUsername">* Username: </label> <input
 											required="required" type="text" class="form-control"
