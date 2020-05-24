@@ -102,11 +102,17 @@
 						<div class="card-group">
 							<div class="card-body"
 								style="background-color: #ededed; margin-top: 20px;">
-								<form>
+								<div class="alert alert-info" th:if="${newPasswordSent}">
+								   <p>A temporary password has been sent to your email.</p>
+								</div>
+								<div class="alert alert-info" th:if="${emailNotExist}">
+								   <p>The email <span th:text="${email}"></span> invalid.</p>
+								</div>
+								<form th:action="@{/forgetpassword}" method="post">
 									<div class="form-group">
-										<label for="recoverEmail">* Email Address: </label> <input
+										<label for="email">* Email Address: </label> <input
 											required="required" type="text" class="form-control"
-											id="recoverEmail" name="recoverEmail">
+											id="email" name="email">
 										<p>Enter your registered email</p>
 									</div>
 

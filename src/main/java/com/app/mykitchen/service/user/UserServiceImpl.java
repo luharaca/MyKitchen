@@ -18,10 +18,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
 	@Autowired
 	UserRepository userRepository;
-
 	@Autowired
 	PasswordResetTokenRepository passwordResetTokenRepository;
-
 	@Autowired
 	RoleService roleService;
 
@@ -49,7 +47,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 	@Override
 	public User createUser(User user) throws BusinessException {
 		if (userRepository.findByUsername(user.getUsername()) != null) {
-			throw new BusinessException("The user already exists");
+			throw new BusinessException("User creation failed : The user already exists");
 		}
 
 		return userRepository.save(user);
@@ -63,5 +61,14 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 	@Override
 	public void createPasswordResetToken(PasswordResetToken passwordResetToken) {
 		passwordResetTokenRepository.save(passwordResetToken);
+	}
+
+	@Override
+	public User updateUser(User user) throws BusinessException {
+		if (userRepository.findByUsername(user.getUsername()) == null) {
+			throw new BusinessException("User update failed : The user does not exist");
+		}
+
+		return userRepository.save(user);
 	}
 }

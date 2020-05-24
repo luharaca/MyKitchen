@@ -15,6 +15,8 @@ public interface UserService extends UserDetailsService {
 	
 	User createUser(User user) throws BusinessException;
 	
+	User updateUser(User user) throws BusinessException; 
+	
 	PasswordResetToken getPasswordResetToken(String token);
 	
 	void createPasswordResetToken(PasswordResetToken passwordResetToken);

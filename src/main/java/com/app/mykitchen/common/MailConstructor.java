@@ -16,7 +16,7 @@ public class MailConstructor {
 	@Autowired
 	private Environment environment;
 
-	public SimpleMailMessage buildEmailForNewUser(HttpServletRequest request, String token, User user,
+	public SimpleMailMessage buildEmail(HttpServletRequest request, String token, User user,
 			String password) {
 
 		String emailText = "http://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath()
@@ -27,7 +27,6 @@ public class MailConstructor {
 		
 		SimpleMailMessage email = new SimpleMailMessage();
 		email.setTo(user.getEmail());
-		email.setCc(adminEmail);
 		email.setSubject("Welcome to My Kitchen");
 		email.setText(emailText);
 		email.setFrom(adminEmail);
