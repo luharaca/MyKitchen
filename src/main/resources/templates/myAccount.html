@@ -78,7 +78,8 @@
 						<div class="card-group">
 							<div class="card-body"
 								style="background-color: #ededed; margin-top: 20px;">
-								<form>
+								<div class="alert alert-info" th:if="${param.error != null}">The username or the email is invalid.</div>
+								<form th:action="@{/login}" method="post">
 									<div class="form-group">
 										<label for="newUsername">* Username: </label> <input
 											required="required" type="text" class="form-control"
