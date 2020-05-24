@@ -5,14 +5,17 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 
 import com.app.mykitchen.common.BusinessException;
 import com.app.mykitchen.domain.User;
+import com.app.mykitchen.domain.security.PasswordResetToken;
 import com.app.mykitchen.domain.security.Role;
 import com.app.mykitchen.domain.security.UserRole;
 import com.app.mykitchen.domain.security.util.SecurityUtils;
@@ -54,9 +57,24 @@ public class UserController {
 		return false;
 	}
 
-	String createUserToken() {
-		// TODO: Generate a token for the user
-		return UUID.randomUUID().toString();
+	void createUserToken(User user, String token) {
+		userService.createPasswordResetToken(new PasswordResetToken(user, token));
+	}
+
+	PasswordResetToken getPasswordResetToken(String token) {
+		return userService.getPasswordResetToken(token);
+	}
+
+	Authentication getUserAuthentication(PasswordResetToken passwordResetToken, Model model) {
+
+		User user = passwordResetToken.getUser();
+
+		model.addAttribute("user", user);
+
+		UserDetails userDetails = userService.loadUserByUsername(user.getUsername());
+
+		return new UsernamePasswordAuthenticationToken(userDetails, userDetails.getPassword(),
+				userDetails.getAuthorities());
 	}
 
 	private Set<UserRole> buildUserRoles(User user, List<String> roleNames) throws BusinessException {
