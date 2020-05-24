@@ -51,8 +51,8 @@ public class HomeController {
 	}
 
 	@GetMapping("/login")
-	public String login(@RequestParam(name = "token", required=false) String token, Model model) {
-		
+	public String login(@RequestParam(name = "token", required = false) String token, Model model) {
+
 		if (token == null) {
 			model.addAttribute("loginActive", true);
 			return MY_ACCOUNT;
@@ -78,7 +78,7 @@ public class HomeController {
 		model.addAttribute("createUserActive", true);
 		return MY_ACCOUNT;
 	}
-	
+
 	@PostMapping(path = "/" + SIGN_UP)
 	public String createNewUserPost(HttpServletRequest request, @ModelAttribute("username") String username,
 			@ModelAttribute("email") String email, Model model) {
@@ -89,17 +89,19 @@ public class HomeController {
 			return MY_ACCOUNT;
 		}
 
-		String password = SecurityUtils.randomPassword();
+		String newPassword = SecurityUtils.randomPassword();
 
 		User user;
 		try {
-			user = userController.createUser(username, email, password, Arrays.asList("CUSTOMER"));
+			user = userController.createUser(username, email, newPassword, Arrays.asList("CUSTOMER"));
 		} catch (BusinessException e) {
 			logger.error("User could not be created due to : " + e.getMessage());
 			return MY_ACCOUNT;
 		}
 
-		sendEmailToNewUser(request, user, password, model);
+		sendEmailToNewUser(request, user, newPassword);
+
+		model.addAttribute("emailSent", true);
 
 		return MY_ACCOUNT;
 	}
@@ -110,17 +112,41 @@ public class HomeController {
 		return MY_ACCOUNT;
 	}
 
-	private void sendEmailToNewUser(HttpServletRequest request, User user, String password, Model model) {
+	@PostMapping("/forgetpassword")
+	public String forgetPasswordPost(HttpServletRequest request, @ModelAttribute("email") String email, Model model)
+			throws BusinessException {
+		model.addAttribute("forgetPasswordActive", true);
+		
+		User user = userController.findUserByEmail(email);
+
+		if (user == null) {
+			model.addAttribute("emailNotExist", true);
+			model.addAttribute("email", email);
+			return MY_ACCOUNT;
+		}
+
+		String newPassword = SecurityUtils.randomPassword();
+
+		user.setPassword(SecurityUtils.passwordEncoder().encode(newPassword));
+
+		user = userController.updateUser(user);
+
+		sendEmailToNewUser(request, user, newPassword);
+
+		model.addAttribute("newPasswordSent", true);
+
+		return MY_ACCOUNT;
+	}
+
+	private void sendEmailToNewUser(HttpServletRequest request, User user, String password) {
 
 		String token = UUID.randomUUID().toString();
 
 		userController.createUserToken(user, token);
 
-		SimpleMailMessage email = mailConstructor.buildEmailForNewUser(request, token, user, password);
+		SimpleMailMessage email = mailConstructor.buildEmail(request, token, user, password);
 
 		mailSender.send(email);
-
-		model.addAttribute("emailSent", true);
 	}
 
 	private boolean isInvalidToken(PasswordResetToken passwordResetToken) {

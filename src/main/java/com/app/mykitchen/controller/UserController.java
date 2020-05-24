@@ -40,6 +40,10 @@ public class UserController {
 
 		return userService.createUser(user);
 	}
+	
+	User updateUser(User user) throws BusinessException {		
+		return userService.updateUser(user);
+	}
 
 	boolean userExists(String username, String email, Model model) {
 		if (userService.findUserByUsername(username) != null) {
@@ -48,13 +52,17 @@ public class UserController {
 			return true;
 		}
 
-		if (userService.findUserByEmail(email) != null) {
+		if (findUserByEmail(email) != null) {
 			model.addAttribute("emailExists", true);
 			model.addAttribute("email", email);
 			return true;
 		}
 
 		return false;
+	}
+	
+	User findUserByEmail(String email) {
+		return userService.findUserByEmail(email);
 	}
 
 	void createUserToken(User user, String token) {
