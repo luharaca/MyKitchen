@@ -1,7 +1,5 @@
 package com.app.mykitchen.service.user;
 
-import java.util.Set;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -10,8 +8,8 @@ import org.springframework.stereotype.Service;
 
 import com.app.mykitchen.common.BusinessException;
 import com.app.mykitchen.domain.User;
-import com.app.mykitchen.domain.security.Role;
-import com.app.mykitchen.domain.security.UserRole;
+import com.app.mykitchen.domain.security.PasswordResetToken;
+import com.app.mykitchen.repository.PasswordResetTokenRepository;
 import com.app.mykitchen.repository.UserRepository;
 import com.app.mykitchen.service.role.RoleService;
 
@@ -20,6 +18,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
 	@Autowired
 	UserRepository userRepository;
+
+	@Autowired
+	PasswordResetTokenRepository passwordResetTokenRepository;
 
 	@Autowired
 	RoleService roleService;
@@ -50,7 +51,17 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 		if (userRepository.findByUsername(user.getUsername()) != null) {
 			throw new BusinessException("The user already exists");
 		}
-		
+
 		return userRepository.save(user);
+	}
+
+	@Override
+	public PasswordResetToken getPasswordResetToken(String token) {
+		return passwordResetTokenRepository.findByToken(token);
+	}
+
+	@Override
+	public void createPasswordResetToken(PasswordResetToken passwordResetToken) {
+		passwordResetTokenRepository.save(passwordResetToken);
 	}
 }

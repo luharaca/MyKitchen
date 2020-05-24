@@ -5,6 +5,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 
 import com.app.mykitchen.common.BusinessException;
 import com.app.mykitchen.domain.User;
+import com.app.mykitchen.domain.security.PasswordResetToken;
 
 public interface UserService extends UserDetailsService {
 	
@@ -13,4 +14,8 @@ public interface UserService extends UserDetailsService {
 	User findUserByEmail(String email);
 	
 	User createUser(User user) throws BusinessException;
+	
+	PasswordResetToken getPasswordResetToken(String token);
+	
+	void createPasswordResetToken(PasswordResetToken passwordResetToken);
 }

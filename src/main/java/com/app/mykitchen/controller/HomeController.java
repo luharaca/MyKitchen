@@ -1,6 +1,7 @@
 package com.app.mykitchen.controller;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
@@ -10,14 +11,18 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 import com.app.mykitchen.common.BusinessException;
 import com.app.mykitchen.common.MailConstructor;
 import com.app.mykitchen.domain.User;
+import com.app.mykitchen.domain.security.PasswordResetToken;
 import com.app.mykitchen.domain.security.util.SecurityUtils;
 
 @Controller
@@ -25,7 +30,7 @@ public class HomeController {
 
 	private Logger logger = LogManager.getLogger(this.getClass());
 
-	private static final String MY_ACCOUNT_TEMPLATE = "myAccount";
+	private static final String MY_ACCOUNT = "myAccount";
 	private static final String SIGN_UP = "signup";
 
 	@Autowired
@@ -42,15 +47,15 @@ public class HomeController {
 		return "index";
 	}
 
-	@GetMapping("/" + MY_ACCOUNT_TEMPLATE)
+	@GetMapping("/" + MY_ACCOUNT)
 	public String myAccount() {
-		return MY_ACCOUNT_TEMPLATE;
+		return MY_ACCOUNT;
 	}
 
 	@GetMapping("/login")
 	public String login(Model model) {
 		model.addAttribute("loginActive", true);
-		return MY_ACCOUNT_TEMPLATE;
+		return MY_ACCOUNT;
 	}
 
 	@PostMapping(path = "/" + SIGN_UP)
@@ -60,7 +65,7 @@ public class HomeController {
 		model.addAttribute("createUserActive", true);
 
 		if (userController.userExists(username, email, model)) {
-			return MY_ACCOUNT_TEMPLATE;
+			return MY_ACCOUNT;
 		}
 
 		String password = SecurityUtils.randomPassword();
@@ -70,34 +75,53 @@ public class HomeController {
 			user = userController.createUser(username, email, password, Arrays.asList("CUSTOMER"));
 		} catch (BusinessException e) {
 			logger.error("User could not be created due to : " + e.getMessage());
-			return MY_ACCOUNT_TEMPLATE;
+			return MY_ACCOUNT;
 		}
 
 		sendEmailToNewUser(request, user, password, model);
 
-		return MY_ACCOUNT_TEMPLATE;
+		return MY_ACCOUNT;
 	}
 
 	@GetMapping("/" + SIGN_UP)
-	public String createNewUser(Model model) {
-		model.addAttribute("createUserActive", true);
-		return MY_ACCOUNT_TEMPLATE;
+	public String createNewUser(@RequestParam("token") String token, Model model) {
+
+		PasswordResetToken passwordResetToken = userController.getPasswordResetToken(token);
+
+		if (isInvalidToken(passwordResetToken)) {
+			model.addAttribute("message", "The token is invalid");
+			return "redirect:/badRequest";
+		}
+
+		SecurityContextHolder.getContext()
+				.setAuthentication(userController.getUserAuthentication(passwordResetToken, model));
+
+		model.addAttribute("editActive", true);
+
+		return "myProfile";
 	}
 
 	@GetMapping("/forgetpassword")
 	public String forgetPassword(Model model) {
 		model.addAttribute("forgetPasswordActive", true);
-		return MY_ACCOUNT_TEMPLATE;
+		return MY_ACCOUNT;
 	}
 
 	private void sendEmailToNewUser(HttpServletRequest request, User user, String password, Model model) {
 
-		String token = userController.createUserToken();
+		String token = UUID.randomUUID().toString();
+
+		userController.createUserToken(user, token);
 
 		SimpleMailMessage email = mailConstructor.buildEmailForNewUser(request, token, user, password);
 
 		mailSender.send(email);
 
 		model.addAttribute("emailSent", true);
+	}
+
+	private boolean isInvalidToken(PasswordResetToken passwordResetToken) {
+		return passwordResetToken == null || passwordResetToken.getUser() == null
+				|| new Date().after(passwordResetToken.getExpiryDate());
 	}
 }
