@@ -20,7 +20,7 @@ public class MailConstructor {
 			String password) {
 
 		String emailText = "http://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath()
-				+ "/signup?token=" + token + "\nPlease click this link to verify your email" 
+				+ "/login?token=" + token + "\nPlease click this link to verify your email" 
 				+ "\n your temporary password is " + password;
 
 		String adminEmail = environment.getProperty("support.email");

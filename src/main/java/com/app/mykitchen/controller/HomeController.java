@@ -35,10 +35,8 @@ public class HomeController {
 
 	@Autowired
 	private UserController userController;
-
 	@Autowired
 	private JavaMailSender mailSender;
-
 	@Autowired
 	private MailConstructor mailConstructor;
 
@@ -53,11 +51,34 @@ public class HomeController {
 	}
 
 	@GetMapping("/login")
-	public String login(Model model) {
-		model.addAttribute("loginActive", true);
-		return MY_ACCOUNT;
+	public String login(@RequestParam(name = "token", required=false) String token, Model model) {
+		
+		if (token == null) {
+			model.addAttribute("loginActive", true);
+			return MY_ACCOUNT;
+		}
+
+		PasswordResetToken passwordResetToken = userController.getPasswordResetToken(token);
+
+		if (isInvalidToken(passwordResetToken)) {
+			model.addAttribute("message", "The token is invalid");
+			return "redirect:/badRequest";
+		}
+
+		SecurityContextHolder.getContext()
+				.setAuthentication(userController.getUserAuthentication(passwordResetToken, model));
+
+		model.addAttribute("editActive", true);
+
+		return "myProfile";
 	}
 
+	@GetMapping("/" + SIGN_UP)
+	public String createNewUser(Model model) {
+		model.addAttribute("createUserActive", true);
+		return MY_ACCOUNT;
+	}
+	
 	@PostMapping(path = "/" + SIGN_UP)
 	public String createNewUserPost(HttpServletRequest request, @ModelAttribute("username") String username,
 			@ModelAttribute("email") String email, Model model) {
@@ -81,24 +102,6 @@ public class HomeController {
 		sendEmailToNewUser(request, user, password, model);
 
 		return MY_ACCOUNT;
-	}
-
-	@GetMapping("/" + SIGN_UP)
-	public String createNewUser(@RequestParam("token") String token, Model model) {
-
-		PasswordResetToken passwordResetToken = userController.getPasswordResetToken(token);
-
-		if (isInvalidToken(passwordResetToken)) {
-			model.addAttribute("message", "The token is invalid");
-			return "redirect:/badRequest";
-		}
-
-		SecurityContextHolder.getContext()
-				.setAuthentication(userController.getUserAuthentication(passwordResetToken, model));
-
-		model.addAttribute("editActive", true);
-
-		return "myProfile";
 	}
 
 	@GetMapping("/forgetpassword")
