@@ -40,8 +40,8 @@ public class UserController {
 
 		return userService.createUser(user);
 	}
-	
-	User updateUser(User user) throws BusinessException {		
+
+	User updateUser(User user) throws BusinessException {
 		return userService.updateUser(user);
 	}
 
@@ -60,7 +60,7 @@ public class UserController {
 
 		return false;
 	}
-	
+
 	User findUserByEmail(String email) {
 		return userService.findUserByEmail(email);
 	}
@@ -89,16 +89,19 @@ public class UserController {
 
 		Set<UserRole> userRoleSet = new HashSet<>();
 
-		Map<String, Role> nameAndRoleMap = buildNameAndRoleMap();
+		if (roleNames != null) {
 
-		for (String roleName : roleNames) {
+			Map<String, Role> nameAndRoleMap = buildNameAndRoleMap();
 
-			if (!nameAndRoleMap.containsKey(roleName)) {
-				throw new BusinessException("Role " + roleName + " does not exist");
+			for (String roleName : roleNames) {
+
+				if (!nameAndRoleMap.containsKey(roleName)) {
+					throw new BusinessException("Role " + roleName + " does not exist");
+				}
+
+				UserRole userRole = new UserRole(user, nameAndRoleMap.get(roleName));
+				userRoleSet.add(userRole);
 			}
-
-			UserRole userRole = new UserRole(user, nameAndRoleMap.get(roleName));
-			userRoleSet.add(userRole);
 		}
 
 		return userRoleSet;
@@ -109,9 +112,11 @@ public class UserController {
 
 		List<Role> roles = roleService.findAllRoles();
 
-		for (Role role : roles) {
-			if (!nameAndRoleMap.containsKey(role.getName())) {
-				nameAndRoleMap.put(role.getName(), role);
+		if (roles != null) {
+			for (Role role : roles) {
+				if (!nameAndRoleMap.containsKey(role.getName())) {
+					nameAndRoleMap.put(role.getName(), role);
+				}
 			}
 		}
 
