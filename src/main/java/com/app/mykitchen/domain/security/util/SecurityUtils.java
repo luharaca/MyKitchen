@@ -22,7 +22,8 @@ public class SecurityUtils {
 			"/myAccount",
 			"/login",
 			"/signup",
-			"/forgetpassword"
+			"/forgetpassword",
+			"/admin"
 	};
 	
 	private static final String SALT = "salt";

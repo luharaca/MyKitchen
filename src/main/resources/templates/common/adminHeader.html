@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en-US" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.w3.org/1999/xhtml"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="headerAndFooter :: common-header" />
+
+<body>
+	<div th:fragment="navbar">
+		<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+			<a class="navbar-brand" th:href="@{/}">My Kitchen</a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse"
+				data-target="#navbarsExample07XL" aria-controls="navbarsExample07XL"
+				aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarsExample07XL">
+				<ul class="navbar-nav mr-auto">
+					<li class="nav-item active"><a class="nav-link" th:href="@{/}">Home
+							<span class="sr-only">(current)</span>
+					</a></li>
+					<li class="nav-item dropdown" sec:authorize="isAuthenticated()"><a
+						class="nav-link dropdown-toggle"
+						href="#" id="dropdown07XL" data-toggle="dropdown"
+						aria-expanded="false">Action</a>
+						<div class="dropdown-menu" aria-labelledby="dropdown07XL">
+							<a class="dropdown-item" href="#">Add a new dish</a> <a
+								class="dropdown-item" href="#">View menu</a>
+						</div></li>
+				</ul>
+				<ul class="nav navbar-nav navbar-right">
+					<li class="nav-item"><a class="nav-link"
+						sec:authorize="isAnonymous()" th:href="@{/login}">Log in</a></li>
+					<li class="nav-item"><a class="nav-link"
+						sec:authorize="isAuthenticated()" th:href="@{/myProfile}">My
+							Account</a></li>
+					<li class="nav-item"><a class="nav-link"
+						sec:authorize="isAuthenticated()" th:href="@{/logout}">Log out</a></li>
+				</ul>
+			</div>
+		</nav>
+	</div>
+</body>
+</html>

@@ -44,6 +44,11 @@ public class HomeController {
 	public String index() {
 		return "index";
 	}
+	
+	@GetMapping(path = "/admin")
+	public String adminHome() {
+		return "adminHome";
+	}
 
 	@GetMapping("/" + MY_ACCOUNT)
 	public String myAccount() {
