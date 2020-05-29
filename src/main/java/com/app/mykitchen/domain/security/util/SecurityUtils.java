@@ -23,7 +23,15 @@ public class SecurityUtils {
 			"/login",
 			"/signup",
 			"/forgetpassword",
-			"/admin"
+			"/admin/login"
+	};
+	
+	public static final String[] ADMIN_PUBLIC_MATCHER = {
+			"/css/**",
+			"/js/**",
+			"/img/**",
+			"/",
+			"/admin/login"
 	};
 	
 	private static final String SALT = "salt";

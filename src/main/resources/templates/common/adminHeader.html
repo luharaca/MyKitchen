@@ -7,7 +7,7 @@
 <body>
 	<div th:fragment="navbar">
 		<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-			<a class="navbar-brand" th:href="@{/}">My Kitchen</a>
+			<a class="navbar-brand">My Kitchen</a>
 			<button class="navbar-toggler" type="button" data-toggle="collapse"
 				data-target="#navbarsExample07XL" aria-controls="navbarsExample07XL"
 				aria-expanded="false" aria-label="Toggle navigation">
@@ -15,21 +15,22 @@
 			</button>
 			<div class="collapse navbar-collapse" id="navbarsExample07XL">
 				<ul class="navbar-nav mr-auto">
-					<li class="nav-item active"><a class="nav-link" th:href="@{/}">Home
+					<li class="nav-item active"><a class="nav-link" sec:authorize="isAnonymous()"
+					th:href="@{/}">Home
 							<span class="sr-only">(current)</span>
 					</a></li>
-					<li class="nav-item dropdown" sec:authorize="isAuthenticated()"><a
+					<li class="nav-item dropdown"><div th:if="${actionActive}"><a
 						class="nav-link dropdown-toggle"
 						href="#" id="dropdown07XL" data-toggle="dropdown"
 						aria-expanded="false">Action</a>
 						<div class="dropdown-menu" aria-labelledby="dropdown07XL">
 							<a class="dropdown-item" href="#">Add a new dish</a> <a
 								class="dropdown-item" href="#">View menu</a>
-						</div></li>
+						</div></div></li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
 					<li class="nav-item"><a class="nav-link"
-						sec:authorize="isAnonymous()" th:href="@{/login}">Log in</a></li>
+						sec:authorize="isAnonymous()" th:href="@{/admin/login}">Log in</a></li>
 					<li class="nav-item"><a class="nav-link"
 						sec:authorize="isAuthenticated()" th:href="@{/myProfile}">My
 							Account</a></li>

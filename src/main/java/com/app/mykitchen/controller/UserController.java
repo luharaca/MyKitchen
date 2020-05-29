@@ -2,6 +2,7 @@ package com.app.mykitchen.controller;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -63,6 +64,23 @@ public class UserController {
 
 	User findUserByEmail(String email) {
 		return userService.findUserByEmail(email);
+	}
+
+	User findUserByUsername(String username) {
+		return userService.findUserByUsername(username);
+	}
+
+	boolean adminRoleAssignedToUser(User user) {
+		if (user.getUserRoles() != null) {
+			Iterator<UserRole> userRoleIterator = user.getUserRoles().iterator();
+			while (userRoleIterator.hasNext()) {
+				Role role = userRoleIterator.next().getRole();
+				if (role != null && "ADMIN".equals(role.getName())) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 	void createUserToken(User user, String token) {

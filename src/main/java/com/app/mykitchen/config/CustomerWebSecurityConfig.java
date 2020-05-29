@@ -2,6 +2,7 @@ package com.app.mykitchen.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -14,14 +15,15 @@ import com.app.mykitchen.service.user.UserService;
 
 @Configuration
 @EnableWebSecurity
-public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+@Order(1)
+public class CustomerWebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
 	private UserService userService;
 
 	private BCryptPasswordEncoder bcryptPasswordEncoder;
 	
-	public WebSecurityConfig() {
+	public CustomerWebSecurityConfig() {
 		bcryptPasswordEncoder = SecurityUtils.passwordEncoder();
 	}
 
@@ -44,6 +46,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		    .logoutSuccessUrl("/?logout").deleteCookies("remember-me").permitAll()
 		    .and()
 		    .rememberMe();
+		
 	}
 
 	@Override
