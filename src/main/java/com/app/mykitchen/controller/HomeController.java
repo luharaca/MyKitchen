@@ -11,6 +11,8 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -44,9 +46,31 @@ public class HomeController {
 	public String index() {
 		return "index";
 	}
-	
+
 	@GetMapping(path = "/admin")
-	public String adminHome() {
+	public String adminHome(Model model) {
+		return "adminHome";
+	}
+
+	@GetMapping(path = "/admin/login")
+	public String adminLogin(Model model) {
+		return "adminLogin";
+	}
+
+	@PostMapping(path = "/admin/login")
+	public String adminLoginPost(@ModelAttribute("username") String username,
+			@ModelAttribute("password") String password, Model model) {
+		User user = userController.findUserByUsername(username);
+
+		if (user == null || !userController.adminRoleAssignedToUser(user)
+				|| !user.getPassword().equals(SecurityUtils.passwordEncoder().encode(password))) {
+			model.addAttribute("invalidUser", true);
+			return "adminLogin";
+		}
+
+		SecurityContextHolder.getContext().setAuthentication(
+				new UsernamePasswordAuthenticationToken(user, user.getPassword(), user.getAuthorities()));
+
 		return "adminHome";
 	}
 
@@ -70,6 +94,8 @@ public class HomeController {
 			return "redirect:/badRequest";
 		}
 
+		Authentication auth = userController.getUserAuthentication(passwordResetToken, model);
+	
 		SecurityContextHolder.getContext()
 				.setAuthentication(userController.getUserAuthentication(passwordResetToken, model));
 
@@ -121,7 +147,7 @@ public class HomeController {
 	public String forgetPasswordPost(HttpServletRequest request, @ModelAttribute("email") String email, Model model)
 			throws BusinessException {
 		model.addAttribute("forgetPasswordActive", true);
-		
+
 		User user = userController.findUserByEmail(email);
 
 		if (user == null) {

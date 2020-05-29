@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="common/headerAndFooter :: common-header" />
+
+
+<body>
+	<div th:replace="common/adminHeader :: navbar"></div>
+
+	<div class="container">
+		<div class="row" style="margin-bottom: 10px;">
+			<img th:src="@{/img/logo.png}" class="img-responsive" width="390px"
+				height="390px">
+		</div>
+		<div class="row" style="margin-bottom: 200px;">
+			<div class="col-lg-6 offset-lg-3">
+				<div class="alert alert-info" th:if="${invalidUser}">
+					<p>Invalid username or password.</p>
+				</div>
+
+				<form class="form-signin" th:action="@{/admin/login}" method="post">
+					<h2 class="form-signin-heading">Please sign in</h2>
+					<div class="form-group">
+						<label for="username" class="sr-only">User name</label> <input
+							id="username" type="text" class="form-control"
+							placeholder="Username" name="username" required="required"
+							autofocus="autofocus" />
+					</div>
+					<div class="form-group">
+						<label for="password" class="sr-only">Password</label> <input
+							id="password" type="password" class="form-control"
+							placeholder="password" name="password" required="required" />
+					</div>
+					<button class="btn btn-lg btn-primary btn-block" type="submit">Sign
+						in</button>
+				</form>
+			</div>
+		</div>
+	</div>
+
+	<hr class="featurette-divider">
+
+	<div th:replace="common/headerAndFooter :: footer"></div>
+
+	<div th:replace="common/headerAndFooter :: body-scripts"></div>
+</body>
+</html>
