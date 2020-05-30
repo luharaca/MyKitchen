@@ -1,4 +1,4 @@
-package com.app.mykitchen.admin.domain;
+package com.app.mykitchen.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -19,12 +19,22 @@ public class Dish {
 	private String name;
 	@Column(columnDefinition="text")
 	private String description;
+	private Category category;
 	private double listPrice;
-	private double ourPrice;	
+	private double discountPrice;	
 	@Transient
 	private MultipartFile dishImage;
 	private boolean active=true;
 	
+	private enum Category {
+		APPETIZER,
+		DESSERT,
+		DRINK,
+		BURGER,
+		SALAD,
+		CHICKEN,
+		FISH
+	}
 	
 	public Long getId() {
 		return id;
@@ -50,12 +60,6 @@ public class Dish {
 	public void setListPrice(double listPrice) {
 		this.listPrice = listPrice;
 	}
-	public double getOurPrice() {
-		return ourPrice;
-	}
-	public void setOurPrice(double ourPrice) {
-		this.ourPrice = ourPrice;
-	}
 	public MultipartFile getDishImage() {
 		return dishImage;
 	}
@@ -67,5 +71,17 @@ public class Dish {
 	}
 	public void setActive(boolean active) {
 		this.active = active;
+	}
+	public Category getCategory() {
+		return category;
+	}
+	public void setCategory(Category category) {
+		this.category = category;
+	}
+	public double getDiscountPrice() {
+		return discountPrice;
+	}
+	public void setDiscountPrice(double discountPrice) {
+		this.discountPrice = discountPrice;
 	}
 }
