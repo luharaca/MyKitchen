@@ -26,6 +26,10 @@ public class Dish {
 	private MultipartFile dishImage;
 	private boolean active=true;
 	
+	public Dish() {
+		// default constructor
+	}
+	
 	private enum Category {
 		APPETIZER,
 		DESSERT,

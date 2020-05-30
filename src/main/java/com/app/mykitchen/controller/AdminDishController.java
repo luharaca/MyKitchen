@@ -4,6 +4,7 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,6 +59,10 @@ public class AdminDishController {
 	
 	@GetMapping("/menu")
 	public String viewMenu(Model model) {
+		List<Dish> menu = dishService.findAllDishes();
+	
+		model.addAttribute("menu", menu);
+	
 		return "menu";
 	}
 }
