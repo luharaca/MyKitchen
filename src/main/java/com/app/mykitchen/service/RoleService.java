@@ -1,4 +1,4 @@
-package com.app.mykitchen.service.role;
+package com.app.mykitchen.service;
 
 import java.util.List;
 

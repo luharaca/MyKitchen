@@ -1,4 +1,4 @@
-package com.app.mykitchen.service.role;
+package com.app.mykitchen.service.impl;
 
 import java.util.List;
 
@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.app.mykitchen.common.BusinessException;
 import com.app.mykitchen.domain.security.Role;
 import com.app.mykitchen.repository.RoleRepository;
+import com.app.mykitchen.service.RoleService;
 
 @Service
 public class RoleServiceImpl implements RoleService {

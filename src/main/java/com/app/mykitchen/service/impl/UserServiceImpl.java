@@ -1,4 +1,4 @@
-package com.app.mykitchen.service.user;
+package com.app.mykitchen.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,7 +11,8 @@ import com.app.mykitchen.domain.User;
 import com.app.mykitchen.domain.security.PasswordResetToken;
 import com.app.mykitchen.repository.PasswordResetTokenRepository;
 import com.app.mykitchen.repository.UserRepository;
-import com.app.mykitchen.service.role.RoleService;
+import com.app.mykitchen.service.RoleService;
+import com.app.mykitchen.service.UserService;
 
 @Service
 public class UserServiceImpl implements UserService, UserDetailsService {
