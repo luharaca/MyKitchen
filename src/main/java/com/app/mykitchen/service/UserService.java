@@ -1,4 +1,4 @@
-package com.app.mykitchen.service.user;
+package com.app.mykitchen.service;
 
 
 import org.springframework.security.core.userdetails.UserDetailsService;

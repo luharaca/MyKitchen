@@ -11,7 +11,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import com.app.mykitchen.domain.security.util.SecurityUtils;
-import com.app.mykitchen.service.user.UserService;
+import com.app.mykitchen.service.UserService;
 
 @Configuration
 @EnableWebSecurity

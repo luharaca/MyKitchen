@@ -11,11 +11,12 @@
 				<form class="form-horizontal" th:action="@{/admin/dish/add}"
 					method="post" enctype="multipart/form-data">
 					<fieldset>
-						<legend class="mx-auto" style="margin-bottom: 50px;">New
-							Dish Details</legend>
+						<legend class="mx-auto" style="margin-bottom: 50px;"><strong>New
+							Dish Details</strong></legend>
 
 						<div class="form-group row">
-							<label class="col-lg-2" for="name">* Name</label>
+							<label class="col-lg-2" for="name"><strong>*
+									Name</strong></label>
 
 							<div class="col-lg-7">
 								<input type="text" class="form-control" id="name" name="name"
@@ -26,7 +27,8 @@
 						</div>
 
 						<div class="form-group row">
-							<label class="col-lg-2" for="description">* Description</label>
+							<label class="col-lg-2" for="description"><strong>*
+									Description</strong></label>
 
 							<div class="col-lg-7">
 								<textarea class="form-control" id="description"
@@ -38,8 +40,8 @@
 						</div>
 
 						<div class="form-group row">
-							<label class="col-lg-2 control-label" for="category">*
-								Category</label>
+							<label class="col-lg-2 control-label" for="category"><strong>*
+									Category</strong></label>
 							<div class="col-lg-7">
 								<select class="form-control" id="category" name="category"
 									th:value="dish.category" required="required">
@@ -60,8 +62,8 @@
 						</div>
 
 						<div class="form-group row">
-							<label class="col-lg-2 control-label" for="listPrice">List
-								Price</label>
+							<label class="col-lg-2 control-label" for="listPrice"><strong>List
+									Price</strong></label>
 							<div class="col-lg-7">
 								<div class="input-group">
 									<div class="input-group-prepend">
@@ -76,8 +78,8 @@
 						</div>
 
 						<div class="form-group row">
-							<label class="col-lg-2 control-label" for="discountPrice">Discount
-								Price</label>
+							<label class="col-lg-2 control-label" for="discountPrice"><strong>Discount
+									Price</strong></label>
 							<div class="col-lg-7">
 								<div class="input-group">
 									<div class="input-group-prepend">
@@ -92,7 +94,7 @@
 
 						<div class="form-group row">
 							<label class="col-lg-2 col-form-label" for="status"
-								th:value="${dish.active}">* Status</label>
+								th:value="${dish.active}"><strong>* Status</strong></label>
 							<div class="col-lg-7">
 								<div class="form-check">
 									<input class="form-check-input" type="radio" name="status"
@@ -111,7 +113,8 @@
 
 						<div class="form-group row">
 							<div class="col-lg-2">
-								<label for="dishImage">Upload Dish Image</label>
+								<label for="dishImage"><strong>Upload Dish
+										Image</strong></label>
 							</div>
 							<div class="col-lg-7">
 								<input id="dishImage" type="file" name="dishImage"

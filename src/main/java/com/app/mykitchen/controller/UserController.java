@@ -20,8 +20,8 @@ import com.app.mykitchen.domain.security.PasswordResetToken;
 import com.app.mykitchen.domain.security.Role;
 import com.app.mykitchen.domain.security.UserRole;
 import com.app.mykitchen.domain.security.util.SecurityUtils;
-import com.app.mykitchen.service.role.RoleService;
-import com.app.mykitchen.service.user.UserService;
+import com.app.mykitchen.service.RoleService;
+import com.app.mykitchen.service.UserService;
 
 @Controller
 public class UserController {
