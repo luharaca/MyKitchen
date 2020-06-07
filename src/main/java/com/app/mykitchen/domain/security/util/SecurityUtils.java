@@ -23,7 +23,9 @@ public class SecurityUtils {
 			"/login",
 			"/signup",
 			"/forgetpassword",
-			"/admin/login"
+			"/admin/login",
+			"/menu",
+			"/dishDetails"
 	};
 	
 	public static final String[] ADMIN_PUBLIC_MATCHER = {

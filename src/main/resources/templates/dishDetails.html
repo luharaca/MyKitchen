@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="common/headerAndFooter :: common-header" />
+<body>
+	<div th:replace="common/headerAndFooter :: navbar"></div>
+
+	<div class="container">
+		<div class="row" style="margin-bottom: -100px;">
+			<div class="col-lg-9">
+				<h2 class="second-headline">
+					<span
+						th:text="${user}? ${#string.toUpperCase(user.username)} : 'The Full Menu' ">User
+						Account</span>
+				</h2>
+			</div>
+			<div class="col-lg-3">
+				<img class="img-responsive rounded-circle" width="400px"
+					height="400px" src="img/logo.png" alt="logo image">
+			</div>
+		</div>
+
+		<hr
+			style="position: absolute; width: 1200px; height: 6px; background-color: #333; z-index: -1; margin-top: -120px">
+
+		<img class="img-responsive" src="img/wood.png" alt="wood"
+			style="margin-top: -70px;" height="200px" width="1200px">
+
+		<form th:action="@{/shoppingCart/addItem}" method="post">
+			<input hidden="hidden" th:field="*{dish.id}" />
+			<div class="row" style="margin-top: 120px;">
+				<div class="col-lg-3">
+					<a th:href="@{/menu}">Back to Menu</a> <img
+						class="image-responsive menu"
+						th:src="@{/img/dish/} + ${dish.id} + '.png'" />
+				</div>
+				<div class="col-xs-9">
+					<h3 th:text="${dish.name}">Dish Name</h3>
+					<div class="row">
+						<div class="col-lg-5">
+							<h5>
+								<strong>Category: </strong><span th:text="${dish.category}"></span>
+							</h5>
+							<p>
+								<strong>Description: </strong><span
+									th:text="${dish.description}"></span>
+							</p>
+						</div>
+
+						<div class="col-lg-7">
+							<div class="panel panel-default"
+								style="border-width: 5px; margin-top: 20p;">
+								<div class="panel-body">
+									<div class="row">
+										<div class="col-lg-6">
+											<h4>
+												Discount Price: <span style="color: #db3208;">$<span
+													th:text="${dish.discountPrice}"></span></span>
+											</h4>
+											<p>
+												List Price: <span style="text-decoration: line-through">$<span
+													th:text="${dish.listPrice}"></span></span>
+											</p>
+											<span>Quantity: </span> <select name="quantity">
+												<option th:each="quantity : ${quantityList}"
+													th:value="${quantity}" th:text="${quantity}"></option>
+											</select>
+										</div>
+										<div class="col-lg-6">
+											<h4 th:if="!${dish.active}">Unavailable</h4>
+											<button type="submit" class="btn btn-warning"
+												style="color: black; border: 1px solid black; padding: 10px 40px 10px 40px;">Add
+												to Cart</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</form>
+
+		<!-- End of the container -->
+		<hr class="featurette-divider">
+
+		<div th:replace="common/headerAndFooter :: footer"></div>
+
+		<div th:replace="common/headerAndFooter :: body-scripts"></div>
+</body>
+</html>
