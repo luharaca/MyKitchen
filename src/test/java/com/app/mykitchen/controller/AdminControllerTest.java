@@ -33,6 +33,11 @@ public class AdminControllerTest {
 		Assert.assertEquals("adminLogin", returnPageName);
 	}
 
+	@Test
+	public void testFailing() {
+		Assert.fail();
+	}
+
 	private static User buildValidUser() {
 		User user = new User();
 		user.setUsername(VALID_USERNAME);
