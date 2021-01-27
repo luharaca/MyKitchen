@@ -1,3 +1,3 @@
 # MyKitchen
-![myKitchen](https://github.com/luharaca/MyKitchen/workflows/myKitchen/badge.svg)
+![CI Build](https://github.com/luharaca/MyKitchen/workflows/CI%Build/badge.svg)
  Java Spring Application
