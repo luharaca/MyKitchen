@@ -2,4 +2,4 @@
  Java Spring Application
  
  
-https://github.com/luharaca/MyKitchen/workflows/<WORKFLOW_NAME>/badge.svg
+https://github.com/luharaca/MyKitchen/workflows/myKitchen/badge.svg
