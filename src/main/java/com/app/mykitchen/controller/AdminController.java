@@ -14,10 +14,10 @@ import com.app.mykitchen.domain.security.util.SecurityUtils;
 
 @Controller
 public class AdminController {
-	
+
 	@Autowired
-	private UserController userController;
-	
+	UserController userController;
+
 	@GetMapping("/admin")
 	public String adminHome(Model model) {
 		return "adminHome";
@@ -27,7 +27,7 @@ public class AdminController {
 	public String adminLogin(Model model) {
 		return "adminLogin";
 	}
-	
+
 	@PostMapping(path = "/admin/login")
 	public String adminLoginPost(@ModelAttribute("username") String username,
 			@ModelAttribute("password") String password, Model model) {
