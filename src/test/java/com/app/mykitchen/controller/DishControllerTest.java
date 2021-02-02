@@ -83,17 +83,6 @@ public class DishControllerTest {
 		dishController.dishDetails(validDish.getId(), null, mockModel);
 
 		verify(dishController.logger).error("User is not found.");
-
-	}
-
-	@Test
-	public void testViewMenuFail() throws InternalServerException {
-
-		String returnPage = dishController.viewMenu(null);
-
-		verify(dishController.dishService).findAllDishes();
-		verify(mockModel).addAttribute(Mockito.anyString(), Mockito.anyList());
-		assertEquals("menu", returnPage);
 	}
 
 	private Dish getDish() {
