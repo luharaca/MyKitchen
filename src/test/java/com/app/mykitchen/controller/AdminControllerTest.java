@@ -33,6 +33,15 @@ public class AdminControllerTest {
 		Assert.assertEquals("adminLogin", returnPageName);
 	}
 
+	@Test
+	public void testAdminHomeSuccess() {
+		Model mockModel = Mockito.mock(Model.class);
+
+		String returnPageName = adminController.adminLogin(mockModel);
+
+		Assert.assertEquals("adminLogin", returnPageName);
+	}
+
 	private static User buildValidUser() {
 		User user = new User();
 		user.setUsername(VALID_USERNAME);
