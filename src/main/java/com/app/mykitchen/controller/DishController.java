@@ -20,39 +20,38 @@ import com.app.mykitchen.service.UserService;
 
 @Controller
 public class DishController {
-	private Logger logger = LoggerFactory.getLogger("DishController");
-	
+	Logger logger = LoggerFactory.getLogger("DishController");
+
 	@Autowired
 	DishService dishService;
 	@Autowired
 	UserService userService;
-	
+
 	@GetMapping("/menu")
 	public String viewMenu(Model model) {
-		
 		List<Dish> menu = dishService.findAllDishes();
-		
+
 		model.addAttribute("menu", menu);
 		return "menu";
 	}
-	
+
 	@GetMapping("/dishDetails")
 	public String dishDetails(@PathParam("id") Long id, Principal principal, Model model) {
-		
+
 		if (principal != null) {
 			User user = userService.findUserByUsername(principal.getName());
 			model.addAttribute("user", user);
-		} 
-		
+		}
+
 		Dish dish = null;
 		try {
 			dish = dishService.findDishById(id);
 		} catch (InternalServerException e) {
-			logger.debug(e.getMessage());
+			logger.error(e.getMessage());
 		}
-		
+
 		model.addAttribute("dish", dish);
-			
+
 		return "dishDetails";
 	}
 
