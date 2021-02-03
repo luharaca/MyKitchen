@@ -34,7 +34,7 @@ public class AdminDishController {
 		dishService.createDish(dish);
 
 		MultipartFile dishImage = dish.getDishImage();
-		
+
 		String name = dish.getId() + ".png";
 
 		try {
@@ -45,8 +45,8 @@ public class AdminDishController {
 			stream.close();
 		} catch (IOException e) {
 			logger.error(e.getMessage());
-		} 
-		
+		}
+
 		return "redirect:menu";
 	}
 
@@ -56,13 +56,11 @@ public class AdminDishController {
 		model.addAttribute("dish", dish);
 		return "addDish";
 	}
-	
+
 	@GetMapping("/menu")
 	public String viewMenu(Model model) {
 		List<Dish> menu = dishService.findAllDishes();
-	
 		model.addAttribute("menu", menu);
-	
 		return "menu";
 	}
 }
