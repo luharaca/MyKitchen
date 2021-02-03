@@ -34,7 +34,7 @@ public class HomeController {
 	private static final String SIGN_UP = "signup";
 
 	@Autowired
-	private UserController userController;
+	UserController userController;
 	@Autowired
 	private JavaMailSender mailSender;
 	@Autowired
@@ -64,7 +64,7 @@ public class HomeController {
 			model.addAttribute("message", "The token is invalid");
 			return "redirect:/badRequest";
 		}
-	
+
 		SecurityContextHolder.getContext()
 				.setAuthentication(userController.getUserAuthentication(passwordResetToken, model));
 
