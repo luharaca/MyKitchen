@@ -36,9 +36,9 @@ public class HomeController {
 	@Autowired
 	UserController userController;
 	@Autowired
-	private JavaMailSender mailSender;
+	JavaMailSender mailSender;
 	@Autowired
-	private MailConstructor mailConstructor;
+	MailConstructor mailConstructor;
 
 	@GetMapping(path = "/")
 	public String index() {

@@ -5,6 +5,9 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -17,10 +20,14 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.ui.Model;
 
 import com.app.mykitchen.common.BusinessException;
+import com.app.mykitchen.common.MailConstructor;
 import com.app.mykitchen.domain.User;
+import com.app.mykitchen.domain.security.PasswordResetToken;
 import com.app.mykitchen.domain.security.Role;
 import com.app.mykitchen.domain.security.UserRole;
 import com.app.mykitchen.service.UserService;
@@ -34,15 +41,22 @@ public class HomeControllerTest {
 	private static final String EMAIL = "user1@gmail.com";
 	private static final String PASSWORD = "password";
 	private static final String ADMIN_ROLE = "Admin";
+	private static final String TOKEN = "token";
 
 	@Mock
 	Model mockModel;
 	@Mock
 	UserService userService;
+	@Mock
+	JavaMailSender mailSender;
+	@Mock
+	MailConstructor mailConstructor;
 
 	@Before
 	public void setUp() {
 		homeController.userController = Mockito.mock(UserController.class);
+		homeController.mailSender = mailSender;
+		homeController.mailConstructor = mailConstructor;
 	}
 
 	@Test
@@ -99,6 +113,16 @@ public class HomeControllerTest {
 	}
 
 	@Test
+	public void testLoginWithTokenSucess() {
+		doReturn(getPasswordResetToken()).when(homeController.userController).getPasswordResetToken(TOKEN);
+
+		String returnPage = homeController.login(TOKEN, mockModel);
+
+		verify(mockModel, times(1)).addAttribute("editActive", true);
+		assertEquals("myProfile", returnPage);
+	}
+
+	@Test
 	public void testForgetPasswordSuccess() {
 		String returnPage = homeController.forgetPassword(mockModel);
 
@@ -107,7 +131,20 @@ public class HomeControllerTest {
 	}
 
 	@Test
-	public void testForgetPasswordPost() throws BusinessException {
+	public void testForgetPasswordPostSuccess() throws BusinessException {
+		doReturn(buildValidUser()).when(homeController.userController).findUserByEmail(VALID_EMAIL);
+		doReturn(new SimpleMailMessage()).when(homeController.mailConstructor).buildEmail(Mockito.any(), Mockito.any(),
+				Mockito.any(), Mockito.any());
+
+		String returnPage = homeController.forgetPasswordPost(null, VALID_EMAIL, mockModel);
+
+		verify(homeController.mailSender, times(1)).send(Mockito.any(SimpleMailMessage.class));
+		verify(mockModel, times(1)).addAttribute("newPasswordSent", true);
+		assertEquals("myAccount", returnPage);
+	}
+
+	@Test
+	public void testForgetPasswordPostFail() throws BusinessException {
 		doReturn(null).when(homeController.userController).findUserByEmail(VALID_EMAIL);
 
 		String returnPage = homeController.forgetPasswordPost(null, VALID_EMAIL, mockModel);
@@ -115,6 +152,41 @@ public class HomeControllerTest {
 		verify(mockModel, times(1)).addAttribute("emailNotExist", true);
 		verify(mockModel, times(1)).addAttribute("email", VALID_EMAIL);
 		assertEquals("myAccount", returnPage);
+	}
+
+	@Test
+	public void testLoginWithInvalidTokenWithoutUserFail() {
+		PasswordResetToken passwordToken = getPasswordResetToken();
+		passwordToken.setUser(null);
+		doReturn(passwordToken).when(homeController.userController).getPasswordResetToken(TOKEN);
+
+		String returnPage = homeController.login(TOKEN, mockModel);
+
+		verify(mockModel, times(1)).addAttribute("message", "The token is invalid");
+		assertEquals("redirect:/badRequest", returnPage);
+	}
+
+	@Test
+	public void testLoginWithExpiredTokenFail() {
+		PasswordResetToken passwordToken = getPasswordResetToken();
+		passwordToken.setExpiryDate(
+				Date.from(LocalDate.of(1000, 1, 1).atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()));
+		doReturn(passwordToken).when(homeController.userController).getPasswordResetToken(TOKEN);
+
+		String returnPage = homeController.login(TOKEN, mockModel);
+
+		verify(mockModel, times(1)).addAttribute("message", "The token is invalid");
+		assertEquals("redirect:/badRequest", returnPage);
+	}
+
+	@Test
+	public void testLoginWithNullTokenFail() {
+		doReturn(null).when(homeController.userController).getPasswordResetToken(TOKEN);
+
+		String returnPage = homeController.login(TOKEN, mockModel);
+
+		verify(mockModel, times(1)).addAttribute("message", "The token is invalid");
+		assertEquals("redirect:/badRequest", returnPage);
 	}
 
 	private User buildValidUser() {
@@ -131,6 +203,14 @@ public class HomeControllerTest {
 		user.setUserRoles(set);
 
 		return user;
+	}
+
+	private PasswordResetToken getPasswordResetToken() {
+		PasswordResetToken token = new PasswordResetToken();
+		token.setExpiryDate(
+				Date.from(LocalDate.of(3000, 1, 1).atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()));
+		token.setUser(buildValidUser());
+		return token;
 	}
 
 }
