@@ -2,6 +2,7 @@ package com.app.mykitchen.controller;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
@@ -14,7 +15,6 @@ import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -90,17 +90,15 @@ public class HomeControllerTest {
 		assertEquals("myAccount", returnPage);
 	}
 
-	@Ignore
 	@Test
 	public void testCreateNewUserPostSuccess() throws BusinessException {
-		doReturn(false).when(homeController.userController).userExists(VALID_USERNAME, VALID_EMAIL, mockModel);
-		// doReturn(buildValidUser()).when(homeController.userController).createUser(Mockito.anyString(),Mockito.anyString());
+		doReturn(new SimpleMailMessage()).when(homeController.mailConstructor).buildEmail(Mockito.any(), Mockito.any(),
+				Mockito.any(), Mockito.any());
 
 		String returnPage = homeController.createNewUserPost(Mockito.mock(HttpServletRequest.class), VALID_USERNAME,
 				VALID_EMAIL, mockModel);
 
-		verify(mockModel, times(1)).addAttribute("emailNotExist", true);
-		verify(mockModel, times(1)).addAttribute("email", VALID_EMAIL);
+		verify(mockModel, times(1)).addAttribute("emailSent", true);
 		assertEquals("myAccount", returnPage);
 	}
 
@@ -140,6 +138,17 @@ public class HomeControllerTest {
 
 		verify(homeController.mailSender, times(1)).send(Mockito.any(SimpleMailMessage.class));
 		verify(mockModel, times(1)).addAttribute("newPasswordSent", true);
+		assertEquals("myAccount", returnPage);
+	}
+
+	@Test
+	public void testCreateNewUserPostFail() throws BusinessException {
+		doThrow(new BusinessException("User could not be created due to : ")).when(homeController.userController)
+				.createUser(Mockito.anyString(), Mockito.anyString(), Mockito.anyString(), Mockito.anyList());
+
+		String returnPage = homeController.createNewUserPost(Mockito.mock(HttpServletRequest.class), VALID_USERNAME,
+				VALID_EMAIL, mockModel);
+
 		assertEquals("myAccount", returnPage);
 	}
 
