@@ -33,8 +33,7 @@ public class AdminController {
 			@ModelAttribute("password") String password, Model model) {
 		User user = userController.findUserByUsername(username);
 
-		if (user == null || !userController.adminRoleAssignedToUser(user)
-				|| !user.getPassword().equals(SecurityUtils.passwordEncoder().encode(password))) {
+		if (user == null || !userController.adminRoleAssignedToUser(user) || !passwordEncoded(user, password)) {
 			model.addAttribute("invalidUser", true);
 			return "adminLogin";
 		}
@@ -43,6 +42,10 @@ public class AdminController {
 				new UsernamePasswordAuthenticationToken(user, user.getPassword(), user.getAuthorities()));
 
 		return "adminHome";
+	}
+
+	boolean passwordEncoded(User user, String password) {
+		return user.getPassword().equals(SecurityUtils.passwordEncoder().encode(password));
 	}
 
 }

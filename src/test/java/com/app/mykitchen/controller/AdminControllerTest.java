@@ -1,23 +1,28 @@
 package com.app.mykitchen.controller;
 
 import org.junit.Assert;
-import org.junit.BeforeClass;
+import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mockito;
+import org.mockito.Spy;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.ui.Model;
 
 import com.app.mykitchen.domain.User;
 import com.app.mykitchen.domain.security.util.SecurityUtils;
 
+@RunWith(MockitoJUnitRunner.class)
 public class AdminControllerTest {
 
 	private final static String VALID_USERNAME = "Mike";
 	private static User validUser;
 
-	private static AdminController adminController = new AdminController();
+	@Spy
+	private AdminController adminController;
 
-	@BeforeClass
-	public static void setup() {
+	@Before
+	public void setup() {
 		adminController.userController = Mockito.mock(UserController.class);
 		validUser = buildValidUser();
 	}
@@ -47,6 +52,18 @@ public class AdminControllerTest {
 		Model mockModel = Mockito.mock(Model.class);
 
 		String returnPageName = adminController.adminHome(mockModel);
+
+		Assert.assertEquals("adminHome", returnPageName);
+	}
+
+	@Test
+	public void testAdminHomePostSuccess() {
+		Model mockModel = Mockito.mock(Model.class);
+		Mockito.doReturn(validUser).when(adminController.userController).findUserByUsername(validUser.getUsername());
+		Mockito.doReturn(true).when(adminController.userController).adminRoleAssignedToUser(Mockito.any());
+		Mockito.doReturn(true).when(adminController).passwordEncoded(validUser, "123");
+
+		String returnPageName = adminController.adminLoginPost(VALID_USERNAME, "123", mockModel);
 
 		Assert.assertEquals("adminHome", returnPageName);
 	}
