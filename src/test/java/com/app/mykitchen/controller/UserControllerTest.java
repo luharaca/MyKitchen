@@ -1,9 +1,11 @@
 package com.app.mykitchen.controller;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.powermock.api.mockito.PowerMockito.whenNew;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -13,9 +15,10 @@ import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
+import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.ui.Model;
 
 import com.app.mykitchen.common.BusinessException;
 import com.app.mykitchen.domain.User;
@@ -24,38 +27,38 @@ import com.app.mykitchen.domain.security.UserRole;
 import com.app.mykitchen.service.RoleService;
 import com.app.mykitchen.service.UserService;
 
-@RunWith(PowerMockRunner.class)
-@PrepareForTest(fullyQualifiedNames = "com.app.mykitchen.controller.UserController")
+@RunWith(MockitoJUnitRunner.class)
 public class UserControllerTest {
 
 	private static final String USERNAME = "user1";
 	private static final String EMAIL = "user1@gmail.com";
 	private static final String PASSWORD = "password";
-	private static final String ADMIN_ROLE = "Admin";
+	private static final String ADMIN_ROLE = "ADMIN";
+	private static final String TOKEN = "ASDFASDFASDFASDFASDF";
 
 	private UserController userController;
-	private User mockUser;
+
+	@Mock
+	User mockUser;
+	@Mock
+	Model mockModel;
 
 	@Before
 	public void setUp() {
 		userController = new UserController();
 		userController.roleService = Mockito.mock(RoleService.class);
 		userController.userService = Mockito.mock(UserService.class);
-		mockUser = Mockito.mock(User.class);
-		doReturn(getRoles()).when(userController.roleService).findAllRoles();
 	}
 
 	@Test
 	public void testCreateUser() throws Exception {
-		whenNew(User.class).withNoArguments().thenReturn(mockUser);
-		doReturn(new User()).when(userController.userService).createUser(mockUser);
+		User user = buildValidUser();
+		doReturn(getRoles()).when(userController.roleService).findAllRoles();
+		doReturn(user).when(userController.userService).createUser(Mockito.any());
 
-		userController.createUser(USERNAME, EMAIL, PASSWORD, Arrays.asList(ADMIN_ROLE));
+		User result = userController.createUser(USERNAME, EMAIL, PASSWORD, Arrays.asList(ADMIN_ROLE));
 
-		verify(mockUser, times(1)).setUsername(USERNAME);
-		verify(mockUser, times(1)).setEmail(EMAIL);
-		verify(mockUser, times(1)).setPassword(Mockito.anyString());
-		verify(mockUser, times(1)).setUserRoles(Mockito.anySet());
+		assertEquals(user.getUsername(), result.getUsername());
 	}
 
 	@Test
@@ -63,6 +66,79 @@ public class UserControllerTest {
 		userController.updateUser(mockUser);
 
 		verify(userController.userService, times(1)).updateUser(mockUser);
+	}
+
+	@Test
+	public void testFindUserByEmail() throws BusinessException {
+		userController.findUserByEmail(EMAIL);
+
+		verify(userController.userService, times(1)).findUserByEmail(EMAIL);
+	}
+
+	@Test
+	public void testFindUserByUsername() throws BusinessException {
+		userController.findUserByUsername(USERNAME);
+
+		verify(userController.userService, times(1)).findUserByUsername(USERNAME);
+	}
+
+	@Test
+	public void testNoAdminRoleAssignedToUser() throws BusinessException {
+		boolean result = userController.adminRoleAssignedToUser(mockUser);
+
+		assertFalse(result);
+	}
+
+	@Test
+	public void testAdminRoleAssignedToUser() throws BusinessException {
+		boolean result = userController.adminRoleAssignedToUser(buildValidUser());
+
+		assertTrue(result);
+	}
+
+	@Test
+	public void testCreateUserToken() {
+		userController.createUserToken(mockUser, TOKEN);
+
+		verify(userController.userService, times(1)).createPasswordResetToken(Mockito.any());
+	}
+
+	@Test
+	public void testUserExistByUsername() {
+		User user = buildValidUser();
+		doReturn(user).when(userController.userService).findUserByUsername(USERNAME);
+
+		boolean exists = userController.userExists(USERNAME, EMAIL, mockModel);
+
+		verify(mockModel, times(1)).addAttribute("usernameExists", true);
+		verify(mockModel, times(1)).addAttribute("username", user.getUsername());
+		assertTrue(exists);
+	}
+
+	@Test
+	public void testUserExistByEmail() {
+		User user = buildValidUser();
+		doReturn(user).when(userController.userService).findUserByEmail(EMAIL);
+
+		boolean exists = userController.userExists(USERNAME, EMAIL, mockModel);
+
+		verify(mockModel, times(1)).addAttribute("emailExists", true);
+		verify(mockModel, times(1)).addAttribute("email", user.getEmail());
+		assertTrue(exists);
+	}
+
+	@Test
+	public void testUserNotExist() {
+		boolean exists = userController.userExists(USERNAME, EMAIL, mockModel);
+
+		assertFalse(exists);
+	}
+
+	@Test
+	public void testGetPasswordResetToken() {
+		userController.getPasswordResetToken(TOKEN);
+
+		verify(userController.userService, times(1)).getPasswordResetToken(TOKEN);
 	}
 
 	private User buildValidUser() {
@@ -82,7 +158,7 @@ public class UserControllerTest {
 	}
 
 	private List<Role> getRoles() {
-		return Arrays.asList(new Role(ADMIN_ROLE));
+		return Arrays.asList(new Role(ADMIN_ROLE), new Role("CUSTOMER"));
 	}
 
 }
