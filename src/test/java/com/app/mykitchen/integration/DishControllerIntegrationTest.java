@@ -69,6 +69,7 @@ public class DishControllerIntegrationTest {
 		dish.setDescription(DISH_DESCRIPTION);
 		dish.setName(DISH_NAME);
 		dish.setActive(true);
+
 		return dish;
 	}
 }
