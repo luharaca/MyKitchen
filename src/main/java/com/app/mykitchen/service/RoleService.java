@@ -3,7 +3,7 @@ package com.app.mykitchen.service;
 import java.util.List;
 
 import com.app.mykitchen.common.BusinessException;
-import com.app.mykitchen.domain.security.Role;
+import com.app.mykitchen.domain.Role;
 
 public interface RoleService {
 	Role findByName(String name);

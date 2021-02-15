@@ -7,8 +7,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.app.mykitchen.common.BusinessException;
+import com.app.mykitchen.domain.PasswordResetToken;
 import com.app.mykitchen.domain.User;
-import com.app.mykitchen.domain.security.PasswordResetToken;
 import com.app.mykitchen.repository.PasswordResetTokenRepository;
 import com.app.mykitchen.repository.UserRepository;
 import com.app.mykitchen.service.RoleService;

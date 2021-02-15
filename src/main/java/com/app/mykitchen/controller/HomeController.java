@@ -21,8 +21,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.app.mykitchen.common.BusinessException;
 import com.app.mykitchen.common.MailConstructor;
+import com.app.mykitchen.domain.PasswordResetToken;
 import com.app.mykitchen.domain.User;
-import com.app.mykitchen.domain.security.PasswordResetToken;
 import com.app.mykitchen.domain.security.util.SecurityUtils;
 
 @Controller

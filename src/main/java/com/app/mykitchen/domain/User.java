@@ -17,13 +17,12 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.app.mykitchen.domain.security.ApplicationAuthority;
-import com.app.mykitchen.domain.security.UserRole;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class User implements UserDetails {
 	private static final long serialVersionUID = -858984227232272230L;
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id", nullable = false, updatable = false)
@@ -42,6 +41,9 @@ public class User implements UserDetails {
 	private String phoneNumber;
 	private boolean enabled = true;
 
+	public User() {
+	}
+
 	public Long getId() {
 		return id;
 	}
@@ -57,7 +59,6 @@ public class User implements UserDetails {
 	public void setUsername(String username) {
 		this.username = username;
 	}
-	
 
 	public String getFirstName() {
 		return firstName;

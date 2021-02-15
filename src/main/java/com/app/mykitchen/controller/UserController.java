@@ -15,10 +15,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 
 import com.app.mykitchen.common.BusinessException;
+import com.app.mykitchen.domain.PasswordResetToken;
+import com.app.mykitchen.domain.Role;
 import com.app.mykitchen.domain.User;
-import com.app.mykitchen.domain.security.PasswordResetToken;
-import com.app.mykitchen.domain.security.Role;
-import com.app.mykitchen.domain.security.UserRole;
+import com.app.mykitchen.domain.UserRole;
 import com.app.mykitchen.domain.security.util.SecurityUtils;
 import com.app.mykitchen.service.RoleService;
 import com.app.mykitchen.service.UserService;

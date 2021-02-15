@@ -1,4 +1,4 @@
-package com.app.mykitchen.domain.security;
+package com.app.mykitchen.domain;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -10,8 +10,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
-
-import com.app.mykitchen.domain.User;
 
 @Entity
 public class PasswordResetToken {

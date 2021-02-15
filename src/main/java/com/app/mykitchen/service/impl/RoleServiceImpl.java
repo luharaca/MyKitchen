@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.app.mykitchen.common.BusinessException;
-import com.app.mykitchen.domain.security.Role;
+import com.app.mykitchen.domain.Role;
 import com.app.mykitchen.repository.RoleRepository;
 import com.app.mykitchen.service.RoleService;
 

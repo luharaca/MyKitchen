@@ -26,10 +26,10 @@ import org.springframework.ui.Model;
 
 import com.app.mykitchen.common.BusinessException;
 import com.app.mykitchen.common.MailConstructor;
+import com.app.mykitchen.domain.PasswordResetToken;
+import com.app.mykitchen.domain.Role;
 import com.app.mykitchen.domain.User;
-import com.app.mykitchen.domain.security.PasswordResetToken;
-import com.app.mykitchen.domain.security.Role;
-import com.app.mykitchen.domain.security.UserRole;
+import com.app.mykitchen.domain.UserRole;
 import com.app.mykitchen.service.UserService;
 
 @RunWith(MockitoJUnitRunner.class)
