@@ -1,4 +1,4 @@
-package com.app.mykitchen.domain.security;
+package com.app.mykitchen.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,8 +9,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-
-import com.app.mykitchen.domain.User;
 
 @Entity
 @Table(name="user_role")

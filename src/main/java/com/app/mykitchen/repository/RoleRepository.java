@@ -4,7 +4,7 @@ package com.app.mykitchen.repository;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import com.app.mykitchen.domain.security.Role;
+import com.app.mykitchen.domain.Role;
 
 @Repository
 public interface RoleRepository extends CrudRepository<Role, Long> {

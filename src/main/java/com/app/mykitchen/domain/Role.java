@@ -1,4 +1,4 @@
-package com.app.mykitchen.domain.security;
+package com.app.mykitchen.domain;
 
 import java.util.HashSet;
 import java.util.Set;
