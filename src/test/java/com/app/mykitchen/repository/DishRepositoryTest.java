@@ -1,4 +1,4 @@
-package com.app.mykitchen.integration;
+package com.app.mykitchen.repository;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -16,12 +16,11 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.app.mykitchen.domain.Dish;
-import com.app.mykitchen.repository.DishRepository;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
 @TestPropertySource(properties = { "spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.H2Dialect" })
-public class DishControllerIntegrationTest {
+public class DishRepositoryTest {
 
 	private static final String DISH_NAME = "TEST_NAME";
 	private static final String DISH_DESCRIPTION = "TEST_DESCRIPTION";
@@ -69,6 +68,7 @@ public class DishControllerIntegrationTest {
 		dish.setDescription(DISH_DESCRIPTION);
 		dish.setName(DISH_NAME);
 		dish.setActive(true);
+
 		return dish;
 	}
 }
